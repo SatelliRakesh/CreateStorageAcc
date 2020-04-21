@@ -2,7 +2,7 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "storageAccountName": { "value": "rakesh-ggk1" },
+      "storageAccountName": { "value": "rakeshggk1" },
       "storageAccountType": { "value": "Standard_LRS" },
       "blobContainerName": { "value": "telemetry" },
       "location": { "value": "eastus" }
