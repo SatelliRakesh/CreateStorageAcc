@@ -31,4 +31,5 @@ steps:
     location: 'East US'
     templateLocation: 'Linked artifact'
     csmFile: './storageacct.json'
+    csmParametersFile: './parameter.json'
     deploymentMode: 'Incremental'
