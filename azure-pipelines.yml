@@ -10,7 +10,7 @@ variables:
   - name: storageAccountName
     value: rakesh
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 steps:
 - script: echo Hello, world!
