@@ -57,7 +57,7 @@ steps:
       $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext -ErrorVariable isTableNotAvailable -ErrorAction SilentlyContinue).CloudTable
       if($isTableNotAvailable){
       New-AzStorageTable –Name $(TableStorage) –Context $saContext
-      $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext
+      $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext)
       
       }
       Install-Module -Name AzTable -Force
