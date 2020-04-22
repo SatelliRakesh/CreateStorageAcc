@@ -59,9 +59,9 @@ steps:
       $hash_table_property = @{}
       $Row.psobject.properties | Foreach { $hash_table_property[$_.Name] = $_.Value }
       Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
-      if(isConflict){
-      Write-Error "Conflict raised as there is an entry in table storage with partition key $($partitionKey) and row key $($rowKey)"
-      }
+      #if(isConflict){
+      #Write-Error "Conflict raised as there is an entry in table storage with partition key $($partitionKey) and row key $($rowKey)"
+      #}
       }
     azurePowerShellVersion: 'LatestVersion'
 
