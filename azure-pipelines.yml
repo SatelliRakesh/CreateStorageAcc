@@ -45,4 +45,5 @@ steps:
       $saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
       New-AzureStorageTable –Name rakeshtablestore –Context $saContext
     azurePowerShellVersion: 'LatestVersion'
+    pwsh: true
 
