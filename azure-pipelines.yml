@@ -43,15 +43,29 @@ steps:
       # You can also pass predefined and custom variables to this script using arguments
       
       
-      
-      $storageAccount = Get-AzStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1
-      
-      $saContext = $storageAccount.Context
-      
-      #$saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
-      #New-AzStorageTable –Name rakeshtablestore –Context $saContext
-      
-      $cloudTable = (Get-AzStorageTable –Name rakeshtablestore –Context $saContext).CloudTable
+            $storageAccount = Get-AzStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1
+                  
+            $saContext = $storageAccount.Context
+                  
+                  #$saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
+                  
+                  
+            $cloudTable = (Get-AzStorageTable –Name rakeshtablestore –Context $saContext -ErrorVariable isTableNotAvailable -ErrorAction SilentlyContinue).CloudTable
+            if($isTableNotAvailable){
+                New-AzStorageTable –Name rakeshtablestore –Context $saContext
+               }
+             Install-Module -Name AzTable -Force
+                  
+            $jsonobj = ConvertFrom-Json -InputObject '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
+            ForEach($Row in $jsonobj){
+              $partitionKey = "$($Row.UserId)" 
+              $rowkey = "Row_$($Row.UserId)"  
+              $hash_table_property = @{}
+              $Row.psobject.properties | Foreach { $hash_table_property[$_.Name] = $_.Value }
+              Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
+              if(isConflict){
+                 Write-Error "Conflict raised as there is an entry in table storage with partition key $($partitionKey) and row key $($rowKey)"
+                }$saContext).CloudTable
       Install-Module -Name AzTable -Force
       
        
