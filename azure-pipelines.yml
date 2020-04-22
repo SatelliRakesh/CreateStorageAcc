@@ -61,7 +61,7 @@ steps:
       Install-Module -Name AzTable -Force
       
       #$jsonobj = ConvertFrom-Json -InputObject '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
-      $jsonobj = ConvertFrom-Json -InputObject $(UserDetails)
+      $jsonobj = ConvertFrom-Json -InputObject '$(UserDetails)'
       ForEach($Row in $jsonobj){
       $partitionKey = "$($Row.UserId)" 
       $rowkey = "$($Row.UserId)"  
