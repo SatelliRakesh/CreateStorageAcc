@@ -69,7 +69,7 @@ steps:
       $partitionKey = "$($Row.UserId)" 
       $rowkey = "$($Row.UserId)"  
       $hash_table_property = @{}
-      $Row.psobject.properties | Foreach { $hash_table_property[$_.Name] = $_.Value }
+      $Row.psobject.properties | Foreach { $hash_table_property[$_.Name]}
       $hash_table_property
       Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
       #if(isConflict){
