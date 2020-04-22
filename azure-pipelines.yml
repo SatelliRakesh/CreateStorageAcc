@@ -54,7 +54,7 @@ steps:
       $saContext = $storageAccount.Context
       #$saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
       
-      $cloudTable = (Get-AzStorageTable –Name rakeshtablestore –Context $saContext -ErrorVariable isTableNotAvailable -ErrorAction SilentlyContinue).CloudTable
+      $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext -ErrorVariable isTableNotAvailable -ErrorAction SilentlyContinue).CloudTable
       if($isTableNotAvailable){
       New-AzStorageTable –Name $(TableStorage) –Context $saContext
       }
