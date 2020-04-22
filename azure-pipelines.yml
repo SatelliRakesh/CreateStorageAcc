@@ -41,8 +41,10 @@ steps:
     Inline: |
       # You can write your azure powershell scripts inline here. 
       # You can also pass predefined and custom variables to this script using arguments
+      Install-Module -Name AzureRM
+      Import-Module -Name AzureRM
       
       $saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
       New-AzureStorageTable –Name rakeshtablestore –Context $saContext
-    preferredAzurePowerShellVersion: '3.*'
+    preferredAzurePowerShellVersion: '2.6.0'
 
