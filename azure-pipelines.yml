@@ -62,12 +62,13 @@ steps:
       
       #$jsonobj = ConvertFrom-Json -InputObject '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
       $jsonobj = ConvertFrom-Json -InputObject '$(UserDetails)'
+      $jsonobj
       ForEach($Row in $jsonobj){
       $partitionKey = "$($Row.UserId)" 
       $rowkey = "$($Row.UserId)"  
       $hash_table_property = @{}
       $Row.psobject.properties | Foreach { $hash_table_property[$_.Name] = $_.Value }
-      Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
+      #Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
       #if(isConflict){
       #Write-Error "Conflict raised as there is an entry in table storage with partition key $($partitionKey) and row key $($rowKey)"
       #}
