@@ -16,7 +16,7 @@ variables:
   - name: StorageAccount
     value: rakeshggk1
   - name: TableStorage
-    value: rakeshtablestore
+    value: superUser
   - name: UserDetails
     value: '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
   - name: SubscriptionId
@@ -64,7 +64,7 @@ steps:
       $jsonobj = ConvertFrom-Json -InputObject '$(UserDetails)'
       ForEach($Row in $jsonobj){
       $partitionKey = "$($Row.UserId)" 
-      $rowkey = "Row_$($Row.UserId)"  
+      $rowkey = "$($Row.UserId)"  
       $hash_table_property = @{}
       $Row.psobject.properties | Foreach { $hash_table_property[$_.Name] = $_.Value }
       Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
