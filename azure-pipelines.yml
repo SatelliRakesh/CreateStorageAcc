@@ -9,17 +9,20 @@ trigger:
 variables:
   - name: storageAccountName
     value: rakeshggk1
+  - name: resourceGroupName
+    value: StorageResGrp
+  - name: SubscriptionName
+    value: Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)
+  - name: StorageAccount
+    value: rakeshggk1
+  - name: UserDetails
+    value: '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
+  - name: SubscriptionId
+    value: d2413346-1d72-4ae7-8969-64fbdf906cf8
 pool:
   vmImage: 'windows-latest'
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
-
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
 
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
@@ -52,7 +55,8 @@ steps:
       }
       Install-Module -Name AzTable -Force
       
-      $jsonobj = ConvertFrom-Json -InputObject '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
+      #$jsonobj = ConvertFrom-Json -InputObject '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
+      $jsonobj = ConvertFrom-Json -InputObject $(UserDetails)
       ForEach($Row in $jsonobj){
       $partitionKey = "$($Row.UserId)" 
       $rowkey = "Row_$($Row.UserId)"  
