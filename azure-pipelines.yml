@@ -8,7 +8,7 @@ trigger:
 
 variables:
   - name: storageAccountName
-    value: rakesh
+    value: rakeshggk1
 pool:
   vmImage: 'windows-latest'
 
@@ -34,12 +34,15 @@ steps:
     csmParametersFile: './parameter.json'
     deploymentMode: 'Incremental'
 
-- task: AzureCLI@2
+- task: AzurePowerShell@5
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)'
-    scriptType: 'ps'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
+    ScriptType: 'InlineScript'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      
       $saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
       New-AzureStorageTable –Name rakeshtablestore –Context $saContext
-    useGlobalConfig: true
+    azurePowerShellVersion: 'LatestVersion'
+
