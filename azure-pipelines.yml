@@ -52,7 +52,7 @@ steps:
       #New-AzStorageTable –Name rakeshtablestore –Context $saContext
       
       $cloudTable = (Get-AzStorageTable –Name rakeshtablestore –Context $saContext).CloudTable
-      Install-Module AzTable
+      Install-Module -Name AzTable -Force
       
        
       
