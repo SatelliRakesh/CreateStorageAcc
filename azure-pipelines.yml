@@ -18,7 +18,7 @@ variables:
   - name: TableStorage
     value: superUser
   - name: UserDetails
-    value: '[{"UserId": "1","Name": "rakesh"}, {"UserId": "2", "Name": "ragav"}]'
+    value: '[{"UserId": "3","Name": "Viswa"}, {"UserId": "4", "Name": "Aditya"}]'
   - name: SubscriptionId
     value: d2413346-1d72-4ae7-8969-64fbdf906cf8
 pool:
