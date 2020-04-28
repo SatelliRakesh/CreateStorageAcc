@@ -41,7 +41,7 @@ steps:
     csmFile: './storageacct.json'
     csmParametersFile: './parameter.json'
     deploymentMode: 'Incremental'
-
+  enabled: false
 - task: AzurePowerShell@5
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)'
