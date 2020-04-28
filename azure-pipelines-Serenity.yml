@@ -16,7 +16,7 @@ variables:
   - name: StorageAccount
     value: rakeshggk1
   - name: TableStorage
-    value: testTable
+    value: testTable1
   - name: SubscriptionId
     value: d2413346-1d72-4ae7-8969-64fbdf906cf8
   - name: serenityMajorVersion
@@ -27,6 +27,8 @@ variables:
     value: 0
   - name: serenityVersion
     value: $(serenityMajorVersion).$(serenityMinorVersion).$(serenityPatchVersion)
+  - name: Environment
+    value: Dev
 
 pool:
   vmImage: 'windows-latest'
@@ -69,7 +71,7 @@ steps:
       Install-Module -Name AzTable -Force
       $partitionKey = "Environment"
       $rowkey = "$(Build.BuildId)"
-      $Row = New-Object PSObject -Property @{ EnvironmentName=$Environment;SerenityVersion="$(serenityVersion)"}
+      $Row = New-Object PSObject -Property @{ EnvironmentName=$(Environment);SerenityVersion="$(serenityVersion)"}
       $hash_table_property = @{}
       $Row.psobject.properties | Foreach {$hash_table_property[$_.Name] = $_.Value }
       Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
