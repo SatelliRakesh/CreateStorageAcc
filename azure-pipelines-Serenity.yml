@@ -1,0 +1,78 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+variables:
+  - name: storageAccountName
+    value: rakeshggk1
+  - name: resourceGroupName
+    value: StorageResGrp
+  - name: SubscriptionName
+    value: Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)
+  - name: StorageAccount
+    value: rakeshggk1
+  - name: TableStorage
+    value: testTable
+  - name: SubscriptionId
+    value: d2413346-1d72-4ae7-8969-64fbdf906cf8
+  - name: serenityMajorVersion
+    value: 5
+  - name: serenityMinorVersion
+    value: 0
+  - name: serenityPatchVersion
+    value: 0
+  - name: serenityVersion
+    value: $(serenityMajorVersion).$(serenityMinorVersion).$(serenityPatchVersion)
+
+pool:
+  vmImage: 'windows-latest'
+
+steps:
+
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Resource Group'
+    #azureResourceManagerConnection: 'Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)'
+    azureResourceManagerConnection: $(SubscriptionName)
+    #subscriptionId: 'd2413346-1d72-4ae7-8969-64fbdf906cf8'
+    subscriptionId: $(SubscriptionId)
+    action: 'Create Or Update Resource Group'
+    #resourceGroupName: 'StorageResGrp'
+    resourceGroupName: $(resourceGroupName)
+    location: 'East US'
+    templateLocation: 'Linked artifact'
+    csmFile: './storageacct.json'
+    csmParametersFile: './parameter.json'
+    deploymentMode: 'Incremental'
+    
+- task: AzurePowerShell@5
+  inputs:
+    azureSubscription: 'Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)'
+    ScriptType: 'InlineScript'
+    Inline: |
+      # You can write your azure powershell scripts inline here. 
+      # You can also pass predefined and custom variables to this script using arguments
+      
+      $storageAccount = Get-AzStorageAccount -ResourceGroupName $(resourceGroupName) -Name $(StorageAccount)
+      $saContext = $storageAccount.Context
+      #$saContext = (Get-AzureRmStorageAccount -ResourceGroupName StorageResGrp -Name rakeshggk1).Context 
+      
+      $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext -ErrorVariable isTableNotAvailable -ErrorAction SilentlyContinue).CloudTable
+      if($isTableNotAvailable){
+      New-AzStorageTable –Name $(TableStorage) –Context $saContext
+      $cloudTable = (Get-AzStorageTable –Name $(TableStorage) –Context $saContext)
+      }
+      Install-Module -Name AzTable -Force
+      $partitionKey = "Environment"
+      $rowkey = "$(Build.BuildId)"
+      $Row = New-Object PSObject -Property @{ EnvironmentName=$Environment;SerenityVersion="$(serenityVersion)"}
+      $hash_table_property = @{}
+      $Row.psobject.properties | Foreach {$hash_table_property[$_.Name] = $_.Value }
+      Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey $rowkey -property  $hash_table_property -ErrorVariable isConflict -ErrorAction SilentlyContinue
+      
+      }
+    azurePowerShellVersion: 'LatestVersion'
