@@ -45,7 +45,7 @@ steps:
 - task: AzurePowerShell@5
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(d2413346-1d72-4ae7-8969-64fbdf906cf8)'
-    ScriptType: 'InlineScript'
+    ScriptType: InlineScript
     Inline: |
       # You can write your azure powershell scripts inline here. 
       # You can also pass predefined and custom variables to this script using arguments
